@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#173d34">
+	<title>FitBuddy | Training, made personal</title>
+	<style>
+		:root {
+			color-scheme: light;
+			--ink: #1c302a;
+			--muted: #64736c;
+			--forest: #173d34;
+			--leaf: #c8f26a;
+			--paper: #f3f5ef;
+			--line: #d9dfd7;
+			--white: #fff;
+			font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+			color: var(--ink);
+			background: var(--paper);
+		}
+
+		* { box-sizing: border-box; }
+
+		body { margin: 0; }
+
+		a { color: inherit; }
+
+		.topbar {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			min-height: 64px;
+			padding: 0 clamp(18px, 5vw, 72px);
+			background: var(--forest);
+			color: var(--white);
+		}
+
+		.brand {
+			display: inline-flex;
+			align-items: center;
+			gap: 10px;
+			color: inherit;
+			font-size: 17px;
+			font-weight: 800;
+			text-decoration: none;
+		}
+
+		.brand-mark {
+			display: grid;
+			width: 30px;
+			aspect-ratio: 1;
+			place-items: center;
+			background: var(--leaf);
+			color: var(--forest);
+			font-family: Georgia, serif;
+			font-size: 19px;
+			font-weight: 700;
+		}
+
+		.topbar nav { display: flex; gap: 22px; align-items: center; }
+
+		.topbar nav a {
+			color: #e1ece5;
+			font-size: 13px;
+			text-decoration: none;
+		}
+
+		.topbar nav a:hover { color: var(--leaf); }
+
+		.hero {
+			position: relative;
+			display: flex;
+			min-height: 210px;
+			align-items: center;
+			overflow: hidden;
+			background: #1a3b33;
+			color: var(--white);
+		}
+
+		.hero-image {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: center 43%;
+			opacity: 0.48;
+		}
+
+		.hero-shade {
+			position: absolute;
+			inset: 0;
+			background: rgba(14, 43, 35, 0.52);
+		}
+
+		.hero-content {
+			position: relative;
+			width: min(1100px, 100%);
+			margin: 0 auto;
+			padding: 25px clamp(20px, 5vw, 72px);
+		}
+
+		.eyebrow {
+			margin: 0 0 7px;
+			color: var(--leaf);
+			font-size: 11px;
+			font-weight: 800;
+			text-transform: uppercase;
+		}
+
+		h1, h2, h3, p { margin-top: 0; }
+
+		h1 {
+			margin-bottom: 7px;
+			font-family: Georgia, "Times New Roman", serif;
+			font-size: 36px;
+			font-weight: 500;
+		}
+
+		.hero-content > p:last-child {
+			max-width: 570px;
+			margin-bottom: 0;
+			color: #eef3ee;
+			font-size: 15px;
+			line-height: 1.5;
+		}
+
+		main {
+			width: min(1100px, 100%);
+			margin: 0 auto;
+			padding: 25px clamp(16px, 5vw, 72px) 52px;
+		}
+
+		.overview {
+			display: grid;
+			grid-template-columns: 1.25fr 1fr;
+			gap: 32px;
+			align-items: end;
+			padding-bottom: 21px;
+			border-bottom: 1px solid var(--line);
+		}
+
+		.overview h2 {
+			max-width: 470px;
+			margin-bottom: 0;
+			font-family: Georgia, "Times New Roman", serif;
+			font-size: 23px;
+			font-weight: 500;
+			line-height: 1.2;
+		}
+
+		.overview-copy {
+			margin: 0;
+			color: var(--muted);
+			font-size: 13px;
+			line-height: 1.6;
+		}
+
+		.workflow {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			margin: 17px 0 25px;
+			border-bottom: 1px solid var(--line);
+		}
+
+		.workflow-item {
+			display: flex;
+			gap: 10px;
+			padding: 0 14px 15px 0;
+			color: var(--muted);
+			font-size: 12px;
+			line-height: 1.4;
+		}
+
+		.workflow-item + .workflow-item { padding-left: 14px; border-left: 1px solid var(--line); }
+
+		.workflow-item strong {
+			display: block;
+			margin-bottom: 3px;
+			color: var(--ink);
+			font-size: 13px;
+		}
+
+		.step-number {
+			color: #63813a;
+			font-family: Georgia, serif;
+			font-size: 19px;
+			line-height: 1;
+		}
+
+		.section-heading {
+			display: flex;
+			align-items: baseline;
+			justify-content: space-between;
+			gap: 16px;
+			margin-bottom: 12px;
+		}
+
+		.section-heading h2 {
+			margin: 0;
+			font-family: Georgia, "Times New Roman", serif;
+			font-size: 23px;
+			font-weight: 500;
+		}
+
+		.section-heading p { margin: 0; color: var(--muted); font-size: 12px; }
+
+		.tool-grid {
+			display: grid;
+			grid-template-columns: minmax(0, 1.35fr) minmax(245px, 0.8fr);
+			gap: 14px;
+			align-items: start;
+		}
+
+		.tool {
+			min-width: 0;
+			border: 1px solid var(--line);
+			background: var(--white);
+		}
+
+		.tool-header {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			padding: 15px 17px;
+			border-bottom: 1px solid var(--line);
+		}
+
+		.tool-icon {
+			display: grid;
+			width: 30px;
+			aspect-ratio: 1;
+			flex: 0 0 auto;
+			place-items: center;
+			background: #edf4e4;
+			color: #345b39;
+			font-size: 16px;
+			font-weight: 800;
+		}
+
+		.tool-header h3 { margin: 0 0 2px; font-size: 14px; }
+		.tool-header p { margin: 0; color: var(--muted); font-size: 11px; }
+
+		form { padding: 16px 17px; }
+
+		.form-grid {
+			display: grid;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 12px;
+		}
+
+		label {
+			display: grid;
+			gap: 5px;
+			color: #43534b;
+			font-size: 11px;
+			font-weight: 700;
+		}
+
+		input, select, textarea {
+			width: 100%;
+			min-width: 0;
+			min-height: 38px;
+			padding: 8px 10px;
+			border: 1px solid #cbd5cc;
+			border-radius: 2px;
+			background: #fff;
+			color: var(--ink);
+			font: inherit;
+			font-size: 13px;
+		}
+
+		input:focus, select:focus, textarea:focus {
+			outline: 2px solid #82a653;
+			outline-offset: 1px;
+		}
+
+		.full { grid-column: 1 / -1; }
+
+		.primary-button, .secondary-button {
+			display: inline-flex;
+			min-height: 40px;
+			align-items: center;
+			justify-content: center;
+			padding: 9px 14px;
+			border: 0;
+			border-radius: 2px;
+			cursor: pointer;
+			font: inherit;
+			font-size: 12px;
+			font-weight: 800;
+		}
+
+		.primary-button { background: var(--forest); color: #fff; }
+		.primary-button:hover { background: #245346; }
+		.primary-button:disabled { cursor: wait; opacity: 0.6; }
+		.secondary-button { background: #eaf1e4; color: var(--forest); }
+
+		.result {
+			display: none;
+			padding: 14px 17px 17px;
+			border-top: 1px solid var(--line);
+		}
+
+		.result.visible { display: block; }
+
+		.result-label {
+			margin: 0 0 8px;
+			color: #52665a;
+			font-size: 10px;
+			font-weight: 800;
+			text-transform: uppercase;
+		}
+
+		.result-text {
+			margin: 0;
+			color: #33443b;
+			font-size: 13px;
+			line-height: 1.6;
+			white-space: pre-wrap;
+			overflow-wrap: anywhere;
+		}
+
+		.feedback-form {
+			display: grid;
+			grid-template-columns: 1fr auto;
+			gap: 8px;
+			padding: 0 17px 16px;
+		}
+
+		.feedback-form[hidden] { display: none; }
+
+		.nutrition-tool form { display: grid; gap: 12px; }
+
+		.nutrition-result {
+			margin: 0 17px 16px;
+			padding: 11px 12px;
+			border-left: 3px solid #91b858;
+			background: #f1f5eb;
+			color: #3f5047;
+			font-size: 13px;
+			line-height: 1.55;
+			white-space: pre-wrap;
+		}
+
+		.nutrition-result:empty { display: none; }
+
+		.status {
+			min-height: 18px;
+			margin: 8px 0 0;
+			color: var(--muted);
+			font-size: 11px;
+		}
+
+		.status.error { color: #a6382d; }
+
+		footer {
+			display: flex;
+			justify-content: space-between;
+			gap: 16px;
+			margin-top: 25px;
+			padding-top: 14px;
+			border-top: 1px solid var(--line);
+			color: var(--muted);
+			font-size: 11px;
+		}
+
+		footer a { color: var(--forest); font-weight: 700; text-decoration-thickness: 1px; }
+
+		@media (max-width: 720px) {
+			.hero { min-height: 180px; }
+			h1 { font-size: 31px; }
+			.overview { grid-template-columns: 1fr; gap: 9px; }
+			.tool-grid { grid-template-columns: 1fr; }
+		}
+
+		@media (max-width: 480px) {
+			.topbar { min-height: 58px; }
+			.topbar nav { gap: 12px; }
+			.topbar nav a { font-size: 11px; }
+			.hero { min-height: 172px; }
+			.hero-content > p:last-child { font-size: 13px; }
+			.workflow { grid-template-columns: 1fr; gap: 10px; }
+			.workflow-item, .workflow-item + .workflow-item {
+				padding: 0 0 10px;
+				border: 0;
+			}
+			.section-heading { align-items: flex-start; flex-direction: column; gap: 4px; }
+			.form-grid { grid-template-columns: 1fr; }
+			.full { grid-column: auto; }
+			footer { flex-direction: column; }
+		}
+	</style>
+</head>
+<body>
+	<header class="topbar">
+		<a class="brand" href="/" aria-label="FitBuddy home">
+			<span class="brand-mark" aria-hidden="true">F</span>
+			<span>FitBuddy</span>
+		</a>
+		<nav aria-label="Main navigation">
+			<a href="#tools">Your tools</a>
+			<a href="/view-all-users">Admin users</a>
+		</nav>
+	</header>
+
+	<section class="hero" aria-labelledby="page-title">
+		<img class="hero-image" src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1800&q=85" alt="Athlete training with weights">
+		<div class="hero-shade" aria-hidden="true"></div>
+		<div class="hero-content">
+			<p class="eyebrow">AI fitness planner</p>
+			<h1 id="page-title">FitBuddy</h1>
+			<p>Personalized workout plans and practical nutrition guidance, built around your goals and refined with your feedback.</p>
+		</div>
+	</section>
+
+	<main>
+		<section class="overview" aria-labelledby="overview-title">
+			<h2 id="overview-title">A training plan that moves with you.</h2>
+			<p class="overview-copy">FitBuddy uses Google Gemini Flash to turn your fitness goal and preferred intensity into a workout plan. Save it, ask for adjustments, and get a focused nutrition tip to support your next step.</p>
+		</section>
+
+		<section class="workflow" aria-label="FitBuddy workflow">
+			<div class="workflow-item"><span class="step-number">01</span><span><strong>Set your goal</strong>Choose a goal and training intensity.</span></div>
+			<div class="workflow-item"><span class="step-number">02</span><span><strong>Build and refine</strong>Generate a plan, then adjust it with feedback.</span></div>
+			<div class="workflow-item"><span class="step-number">03</span><span><strong>Stay supported</strong>Get a practical nutrition tip for your goal.</span></div>
+		</section>
+
+		<section id="tools" aria-labelledby="tools-title">
+			<div class="section-heading">
+				<h2 id="tools-title">Your training workspace</h2>
+				<p>Your saved plans are connected to your user ID.</p>
+			</div>
+
+			<div class="tool-grid">
+				<section class="tool" aria-labelledby="plan-title">
+					<div class="tool-header">
+						<span class="tool-icon" aria-hidden="true">↗</span>
+						<div><h3 id="plan-title">Create a workout plan</h3><p>Personalized to your profile and training goal</p></div>
+					</div>
+					<form id="plan-form">
+						<div class="form-grid">
+							<label>User ID<input name="user_id" type="number" min="1" step="1" required placeholder="e.g. 104"></label>
+							<label>Name<input name="username" type="text" maxlength="100" required placeholder="Your name"></label>
+							<label>Age<input name="age" type="number" min="1" max="120" required placeholder="Years"></label>
+							<label>Weight (kg)<input name="weight" type="number" min="1" step="0.1" required placeholder="e.g. 68.5"></label>
+							<label>Fitness goal
+								<select name="goal" required>
+									<option value="" disabled selected>Select a goal</option>
+									<option value="general fitness">General fitness</option>
+									<option value="build muscle">Build muscle</option>
+									<option value="lose weight">Lose weight</option>
+									<option value="improve endurance">Improve endurance</option>
+									<option value="improve mobility">Improve mobility</option>
+								</select>
+							</label>
+							<label>Training intensity
+								<select name="intensity" required>
+									<option value="" disabled selected>Select intensity</option>
+									<option value="low">Low</option>
+									<option value="moderate">Moderate</option>
+									<option value="high">High</option>
+								</select>
+							</label>
+							<div class="full">
+								<button class="primary-button" type="submit">Generate workout plan</button>
+								<p id="plan-status" class="status" role="status" aria-live="polite"></p>
+							</div>
+						</div>
+					</form>
+					<div id="plan-result" class="result" aria-live="polite">
+						<p class="result-label">Your workout plan</p>
+						<p id="plan-text" class="result-text"></p>
+					</div>
+					<form id="feedback-form" class="feedback-form" hidden>
+						<label class="full" for="feedback">What would you like to adjust?</label>
+						<textarea id="feedback" name="feedback" rows="2" required placeholder="For example: replace jumping exercises with low-impact options"></textarea>
+						<button class="secondary-button" type="submit">Revise plan</button>
+						<p id="feedback-status" class="status full" role="status" aria-live="polite"></p>
+					</form>
+				</section>
+
+				<section class="tool nutrition-tool" aria-labelledby="nutrition-title">
+					<div class="tool-header">
+						<span class="tool-icon" aria-hidden="true">+</span>
+						<div><h3 id="nutrition-title">Nutrition tip</h3><p>A focused suggestion for your goal</p></div>
+					</div>
+					<form id="nutrition-form">
+						<label for="nutrition-goal">Fitness goal
+							<input id="nutrition-goal" name="goal" type="text" required placeholder="e.g. improve endurance">
+						</label>
+						<div>
+							<button class="secondary-button" type="submit">Get a nutrition tip</button>
+							<p id="nutrition-status" class="status" role="status" aria-live="polite"></p>
+						</div>
+					</form>
+					<p id="nutrition-result" class="nutrition-result" aria-live="polite"></p>
+				</section>
+			</div>
+		</section>
+
+		<footer>
+			<span>FitBuddy · AI-assisted fitness planning</span>
+			<span>Generated guidance is general information, not medical advice.</span>
+		</footer>
+	</main>
+
+	<script>
+		const planForm = document.querySelector("#plan-form");
+		const feedbackForm = document.querySelector("#feedback-form");
+		const planStatus = document.querySelector("#plan-status");
+		const feedbackStatus = document.querySelector("#feedback-status");
+		const planResult = document.querySelector("#plan-result");
+		const planText = document.querySelector("#plan-text");
+		let activeUserId = null;
+
+		async function readResponse(response) {
+			const payload = await response.json();
+			if (!response.ok) {
+				throw new Error(payload.detail || payload.error || "The request could not be completed.");
+			}
+			if (payload.error) throw new Error(payload.error);
+			return payload;
+		}
+
+		function showStatus(element, message, isError = false) {
+			element.textContent = message;
+			element.classList.toggle("error", isError);
+		}
+
+		planForm.addEventListener("submit", async (event) => {
+			event.preventDefault();
+			const button = planForm.querySelector("button[type='submit']");
+			const formData = new FormData(planForm);
+			const userId = Number(formData.get("user_id"));
+			const payload = Object.fromEntries(formData.entries());
+			payload.user_id = userId;
+			payload.age = Number(payload.age);
+			payload.weight = Number(payload.weight);
+			button.disabled = true;
+			showStatus(planStatus, "Building your plan...");
+
+			try {
+				const result = await readResponse(await fetch("/generate-plan", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify(payload)
+				}));
+				activeUserId = userId;
+				planText.textContent = result.workout_plan;
+				planResult.classList.add("visible");
+				feedbackForm.hidden = false;
+				showStatus(planStatus, result.message);
+			} catch (error) {
+				showStatus(planStatus, error.message, true);
+			} finally {
+				button.disabled = false;
+			}
+		});
+
+		feedbackForm.addEventListener("submit", async (event) => {
+			event.preventDefault();
+			const button = feedbackForm.querySelector("button[type='submit']");
+			button.disabled = true;
+			showStatus(feedbackStatus, "Updating your plan...");
+
+			try {
+				const result = await readResponse(await fetch(`/update-plan/${activeUserId}`, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ feedback: new FormData(feedbackForm).get("feedback") })
+				}));
+				planText.textContent = result.updated_plan;
+				feedbackForm.reset();
+				showStatus(feedbackStatus, "Your plan has been updated.");
+			} catch (error) {
+				showStatus(feedbackStatus, error.message, true);
+			} finally {
+				button.disabled = false;
+			}
+		});
+
+		const nutritionForm = document.querySelector("#nutrition-form");
+		const nutritionStatus = document.querySelector("#nutrition-status");
+		const nutritionResult = document.querySelector("#nutrition-result");
+
+		nutritionForm.addEventListener("submit", async (event) => {
+			event.preventDefault();
+			const button = nutritionForm.querySelector("button[type='submit']");
+			const goal = new FormData(nutritionForm).get("goal");
+			button.disabled = true;
+			showStatus(nutritionStatus, "Finding a tip...");
+
+			try {
+				const result = await readResponse(await fetch(`/nutrition-tip?goal=${encodeURIComponent(goal)}`));
+				nutritionResult.textContent = result.nutrition_tip;
+				showStatus(nutritionStatus, "Tip ready.");
+			} catch (error) {
+				showStatus(nutritionStatus, error.message, true);
+			} finally {
+				button.disabled = false;
+			}
+		});
+	</script>
+</body>
+</html>
